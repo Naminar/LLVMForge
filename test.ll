@@ -164,8 +164,8 @@ declare void @simPutPixel(i32 noundef, i32 noundef, i32 noundef) #1
 
 ; Function Attrs: noinline nounwind optnone uwtable
 define dso_local void @app() #0 {
-  %1 = alloca [20 x i32], align 16
-  %2 = alloca [20 x i32], align 16
+  %1 = alloca [50 x i32], align 16
+  %2 = alloca [50 x i32], align 16
   %3 = alloca i32, align 4
   %4 = alloca i32, align 4
   %5 = alloca i32, align 4
@@ -179,17 +179,17 @@ define dso_local void @app() #0 {
   %13 = alloca i32, align 4
   %14 = alloca i32, align 4
   %15 = alloca i32, align 4
-  %16 = bitcast [20 x i32]* %1 to i8*
-  call void @llvm.memset.p0i8.i64(i8* align 16 %16, i8 0, i64 80, i1 false)
-  %17 = bitcast [20 x i32]* %2 to i8*
-  call void @llvm.memset.p0i8.i64(i8* align 16 %17, i8 0, i64 80, i1 false)
+  %16 = bitcast [50 x i32]* %1 to i8*
+  call void @llvm.memset.p0i8.i64(i8* align 16 %16, i8 0, i64 200, i1 false)
+  %17 = bitcast [50 x i32]* %2 to i8*
+  call void @llvm.memset.p0i8.i64(i8* align 16 %17, i8 0, i64 200, i1 false)
   store i32 0, i32* %3, align 4
   store i32 0, i32* %8, align 4
   br label %18
 
 18:                                               ; preds = %32, %0
   %19 = load i32, i32* %8, align 4
-  %20 = icmp slt i32 %19, 20
+  %20 = icmp slt i32 %19, 50
   br i1 %20, label %21, label %35
 
 21:                                               ; preds = %18
@@ -197,13 +197,13 @@ define dso_local void @app() #0 {
   %23 = srem i32 %22, 1024
   %24 = load i32, i32* %8, align 4
   %25 = sext i32 %24 to i64
-  %26 = getelementptr inbounds [20 x i32], [20 x i32]* %1, i64 0, i64 %25
+  %26 = getelementptr inbounds [50 x i32], [50 x i32]* %1, i64 0, i64 %25
   store i32 %23, i32* %26, align 4
   %27 = call i32 (...) @simRand()
   %28 = srem i32 %27, 512
   %29 = load i32, i32* %8, align 4
   %30 = sext i32 %29 to i64
-  %31 = getelementptr inbounds [20 x i32], [20 x i32]* %2, i64 0, i64 %30
+  %31 = getelementptr inbounds [50 x i32], [50 x i32]* %2, i64 0, i64 %30
   store i32 %28, i32* %31, align 4
   br label %32
 
@@ -219,13 +219,13 @@ define dso_local void @app() #0 {
 
 36:                                               ; preds = %120, %35
   %37 = load i32, i32* %9, align 4
-  %38 = icmp slt i32 %37, 20
+  %38 = icmp slt i32 %37, 50
   br i1 %38, label %39, label %123
 
 39:                                               ; preds = %36
   %40 = load i32, i32* %9, align 4
   %41 = sext i32 %40 to i64
-  %42 = getelementptr inbounds [20 x i32], [20 x i32]* %1, i64 0, i64 %41
+  %42 = getelementptr inbounds [50 x i32], [50 x i32]* %1, i64 0, i64 %41
   %43 = load i32, i32* %42, align 4
   store i32 %43, i32* %10, align 4
   br label %44
@@ -239,7 +239,7 @@ define dso_local void @app() #0 {
   %48 = load i32, i32* %10, align 4
   %49 = load i32, i32* %9, align 4
   %50 = sext i32 %49 to i64
-  %51 = getelementptr inbounds [20 x i32], [20 x i32]* %2, i64 0, i64 %50
+  %51 = getelementptr inbounds [50 x i32], [50 x i32]* %2, i64 0, i64 %50
   %52 = load i32, i32* %51, align 4
   %53 = load i32, i32* %9, align 4
   %54 = mul nsw i32 %53, 25
@@ -256,7 +256,7 @@ define dso_local void @app() #0 {
 59:                                               ; preds = %44
   %60 = load i32, i32* %9, align 4
   %61 = sext i32 %60 to i64
-  %62 = getelementptr inbounds [20 x i32], [20 x i32]* %1, i64 0, i64 %61
+  %62 = getelementptr inbounds [50 x i32], [50 x i32]* %1, i64 0, i64 %61
   %63 = load i32, i32* %62, align 4
   store i32 %63, i32* %11, align 4
   br label %64
@@ -270,7 +270,7 @@ define dso_local void @app() #0 {
   %68 = load i32, i32* %11, align 4
   %69 = load i32, i32* %9, align 4
   %70 = sext i32 %69 to i64
-  %71 = getelementptr inbounds [20 x i32], [20 x i32]* %2, i64 0, i64 %70
+  %71 = getelementptr inbounds [50 x i32], [50 x i32]* %2, i64 0, i64 %70
   %72 = load i32, i32* %71, align 4
   %73 = load i32, i32* %9, align 4
   %74 = mul nsw i32 %73, 25
@@ -287,7 +287,7 @@ define dso_local void @app() #0 {
 79:                                               ; preds = %64
   %80 = load i32, i32* %9, align 4
   %81 = sext i32 %80 to i64
-  %82 = getelementptr inbounds [20 x i32], [20 x i32]* %2, i64 0, i64 %81
+  %82 = getelementptr inbounds [50 x i32], [50 x i32]* %2, i64 0, i64 %81
   %83 = load i32, i32* %82, align 4
   store i32 %83, i32* %12, align 4
   br label %84
@@ -300,7 +300,7 @@ define dso_local void @app() #0 {
 87:                                               ; preds = %84
   %88 = load i32, i32* %9, align 4
   %89 = sext i32 %88 to i64
-  %90 = getelementptr inbounds [20 x i32], [20 x i32]* %1, i64 0, i64 %89
+  %90 = getelementptr inbounds [50 x i32], [50 x i32]* %1, i64 0, i64 %89
   %91 = load i32, i32* %90, align 4
   %92 = load i32, i32* %12, align 4
   %93 = load i32, i32* %9, align 4
@@ -318,7 +318,7 @@ define dso_local void @app() #0 {
 99:                                               ; preds = %84
   %100 = load i32, i32* %9, align 4
   %101 = sext i32 %100 to i64
-  %102 = getelementptr inbounds [20 x i32], [20 x i32]* %2, i64 0, i64 %101
+  %102 = getelementptr inbounds [50 x i32], [50 x i32]* %2, i64 0, i64 %101
   %103 = load i32, i32* %102, align 4
   store i32 %103, i32* %13, align 4
   br label %104
@@ -331,7 +331,7 @@ define dso_local void @app() #0 {
 107:                                              ; preds = %104
   %108 = load i32, i32* %9, align 4
   %109 = sext i32 %108 to i64
-  %110 = getelementptr inbounds [20 x i32], [20 x i32]* %1, i64 0, i64 %109
+  %110 = getelementptr inbounds [50 x i32], [50 x i32]* %1, i64 0, i64 %109
   %111 = load i32, i32* %110, align 4
   %112 = load i32, i32* %13, align 4
   %113 = load i32, i32* %9, align 4
@@ -347,6 +347,7 @@ define dso_local void @app() #0 {
   br label %104, !llvm.loop !15
 
 119:                                              ; preds = %104
+  call void (...) @simFlush()
   br label %120
 
 120:                                              ; preds = %119
@@ -361,7 +362,7 @@ define dso_local void @app() #0 {
 
 124:                                              ; preds = %158, %123
   %125 = load i32, i32* %14, align 4
-  %126 = icmp slt i32 %125, 20
+  %126 = icmp slt i32 %125, 50
   br i1 %126, label %127, label %161
 
 127:                                              ; preds = %124
@@ -372,28 +373,28 @@ define dso_local void @app() #0 {
 
 130:                                              ; preds = %154, %127
   %131 = load i32, i32* %15, align 4
-  %132 = icmp slt i32 %131, 20
+  %132 = icmp slt i32 %131, 50
   br i1 %132, label %133, label %157
 
 133:                                              ; preds = %130
   %134 = load i32, i32* %14, align 4
   %135 = sext i32 %134 to i64
-  %136 = getelementptr inbounds [20 x i32], [20 x i32]* %2, i64 0, i64 %135
+  %136 = getelementptr inbounds [50 x i32], [50 x i32]* %2, i64 0, i64 %135
   %137 = load i32, i32* %136, align 4
   store i32 %137, i32* %5, align 4
   %138 = load i32, i32* %15, align 4
   %139 = sext i32 %138 to i64
-  %140 = getelementptr inbounds [20 x i32], [20 x i32]* %1, i64 0, i64 %139
+  %140 = getelementptr inbounds [50 x i32], [50 x i32]* %1, i64 0, i64 %139
   %141 = load i32, i32* %140, align 4
   store i32 %141, i32* %4, align 4
   %142 = load i32, i32* %15, align 4
   %143 = sext i32 %142 to i64
-  %144 = getelementptr inbounds [20 x i32], [20 x i32]* %2, i64 0, i64 %143
+  %144 = getelementptr inbounds [50 x i32], [50 x i32]* %2, i64 0, i64 %143
   %145 = load i32, i32* %144, align 4
   store i32 %145, i32* %7, align 4
   %146 = load i32, i32* %14, align 4
   %147 = sext i32 %146 to i64
-  %148 = getelementptr inbounds [20 x i32], [20 x i32]* %1, i64 0, i64 %147
+  %148 = getelementptr inbounds [50 x i32], [50 x i32]* %1, i64 0, i64 %147
   %149 = load i32, i32* %148, align 4
   store i32 %149, i32* %6, align 4
   %150 = load i32, i32* %4, align 4
