@@ -1,5 +1,4 @@
 #include "sim.h"
-#include <stdio.h>
 
 #define N_STARS 50
 
