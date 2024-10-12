@@ -57,13 +57,13 @@ int main() {
 
 
   builder.SetInsertPoint(BB0);
-    Value *val1 = builder.CreateCall(SimRandFunc, {});
 
     Value *const1024 = ConstantInt::get(Type::getInt32Ty(context), 1024);
     Value *const4056 = ConstantInt::get(Type::getInt32Ty(context), 4056);
     Value *const512 = ConstantInt::get(Type::getInt32Ty(context), 512);
     Value *const0 = ConstantInt::get(Type::getInt32Ty(context), 0);
 
+    Value *val1 = builder.CreateCall(SimRandFunc, {});
     Value *val2 = builder.CreateSRem(val1, const1024);
     Value *val3 = builder.CreateCall(SimRandFunc, {});
     Value *val4 = builder.CreateSRem(val3, const512);
