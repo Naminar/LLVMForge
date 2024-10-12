@@ -1,4 +1,5 @@
-// #include "../sim.h"
+
+#include "../lab1/sim.h"
 
 #include "llvm/ExecutionEngine/ExecutionEngine.h"
 #include "llvm/ExecutionEngine/GenericValue.h"
@@ -87,32 +88,100 @@ int main() {
     builder.CreateBr(BB26);
   
   builder.SetInsertPoint(BB18);
-    
+    PHINode *val19 = builder.CreatePHI(builder.getInt32Ty(), 2);
+    Value *val20 = builder.CreateNSWMul(val19, val15);
+    Value *val21 = builder.CreateNSWAdd(val20, builder.getInt32(65535));
+    builder.CreateCall(simPutPixelFunc, {val19, val4, val21});
+    builder.CreateCall(simFlushFunc);
+    Value *val22 = builder.CreateNSWAdd(val19, builder.getInt32(-1));
+    Value *val23 = builder.CreateICmpUGT(val19, builder.getInt32(1));
+    builder.CreateCondBr(val23, BB18, BB16);
+  
+  builder.SetInsertPoint(BB24);
+    Value *val25 = builder.CreateNSWAdd(val9, builder.getInt32(16));
+    builder.CreateBr(BB36);
+  
+  builder.SetInsertPoint(BB26);
+    PHINode *val27 = builder.CreatePHI(builder.getInt32Ty(), 2);
+    Value *val28 = builder.CreateNSWMul(val27, val17);
+    Value *val29 = builder.CreateNSWAdd(val28, builder.getInt32(65535));
+    builder.CreateCall(simPutPixelFunc, {val27, val4, val29});
+    builder.CreateCall(simFlushFunc);
+    Value *val30 = builder.CreateNSWAdd(val27, builder.getInt32(1));
+    Value *val31 = builder.CreateICmpEQ(val30, builder.getInt32(1024));
+    builder.CreateCondBr(val31, BB24, BB26);
+
+  builder.SetInsertPoint(BB32);
+    Value *val33 = builder.CreateICmpSGT(val4, builder.getInt32(0));
+    builder.CreateCondBr(val33, BB34, BB42);
+  
+  builder.SetInsertPoint(BB34);
+    Value *val35 = builder.CreateNSWAdd(val11, builder.getInt32(16));
+    builder.CreateBr(BB43);
+  
+  builder.SetInsertPoint(BB36);
+    PHINode *val37 = builder.CreatePHI(builder.getInt32Ty(), 2);
+    Value *val38 = builder.CreateNSWMul(val37, val25);
+    Value *val39 = builder.CreateNSWAdd(val38, builder.getInt32(65535));
+    builder.CreateCall(simPutPixelFunc, {val2, val37, val39});
+    builder.CreateCall(simFlushFunc);
+    Value *val40 = builder.CreateNSWAdd(val37, builder.getInt32(1));
+    Value *val41 = builder.CreateICmpEQ(val40, const512);
+    builder.CreateCondBr(val41, BB32, BB36);
+  
+  builder.SetInsertPoint(BB42);
+    builder.CreateRetVoid();
+  
+  builder.SetInsertPoint(BB43);
+    PHINode *val44 = builder.CreatePHI(builder.getInt32Ty(), 2);
+    Value *val45 = builder.CreateNSWMul(val44, val35);
+    Value *val46 = builder.CreateNSWAdd(val45, builder.getInt32(65535));
+    builder.CreateCall(simPutPixelFunc, {val2, val44, val46});
+    builder.CreateCall(simFlushFunc);
+    Value *val47 = builder.CreateNSWAdd(val44, builder.getInt32(-1));
+    Value *val48 = builder.CreateICmpUGT(val44, builder.getInt32(1));
+    builder.CreateCondBr(val48, BB43, BB42);
+
+  val19->addIncoming(val2, BB13);
+  val19->addIncoming(val22, BB18);
+
+  val27->addIncoming(val2, BB16);
+  val27->addIncoming(val30, BB26);
+
+  val37->addIncoming(val4, BB24);
+  val37->addIncoming(val40, BB36);
+
+  val44->addIncoming(val4, BB34);
+  val44->addIncoming(val47, BB43);
 
   module->print(outs(), nullptr);
+  
   // LLVM IR Interpreter
-  // outs() << "[EE] Run\n";
-  // InitializeNativeTarget();
-  // InitializeNativeTargetAsmPrinter();
+  outs() << "[EE] Run\n";
+  InitializeNativeTarget();
+  InitializeNativeTargetAsmPrinter();
 
-  // ExecutionEngine *ee = EngineBuilder(std::unique_ptr<Module>(module)).create();
-  // ee->InstallLazyFunctionCreator([&](const std::string &fnName) -> void * {
-  //   if (fnName == "simPutPixel") {
-  //     return reinterpret_cast<void *>(simPutPixel);
-  //   }
-  //   if (fnName == "simFlush") {
-  //     return reinterpret_cast<void *>(simFlush);
-  //   }
-  //   return nullptr;
-  // });
-  // ee->finalizeObject();
+  ExecutionEngine *ee = EngineBuilder(std::unique_ptr<Module>(module)).create();
+  ee->InstallLazyFunctionCreator([&](const std::string &fnName) -> void * {
+    if (fnName == "simPutPixel") {
+      return reinterpret_cast<void *>(simPutPixel);
+    }
+    if (fnName == "simFlush") {
+      return reinterpret_cast<void *>(simFlush);
+    }
+    if (fnName == "simRand") {
+      return reinterpret_cast<void *>(simRand);
+    }
+    return nullptr;
+  });
+  ee->finalizeObject();
 
-  // simInit();
+  simInit();
 
-  // ArrayRef<GenericValue> noargs;
-  // GenericValue v = ee->runFunction(appFunc, noargs);
-  // outs() << "[EE] Result: " << v.IntVal << "\n";
+  ArrayRef<GenericValue> noargs;
+  GenericValue v = ee->runFunction(appFunc, noargs);
+  outs() << "[EE] Result: " << v.IntVal << "\n";
 
-  // simExit();
+  simExit();
   return EXIT_SUCCESS;
 }
