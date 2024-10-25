@@ -1,1 +1,1 @@
-![](statistic.jpeg)
+![](./statistic.jpeg)
