@@ -6,4 +6,4 @@ clang++ $(llvm-config --cppflags --ldflags --libs) ../lab1/sim.c app_asm_ir_gen.
 ./a.out app_asm_result.s
 ```
 
-![alt text](ISA.png)
+![alt text](src/ISA.png)
