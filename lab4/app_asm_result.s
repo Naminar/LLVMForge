@@ -9,6 +9,7 @@ entry:
     jumpIfNot reg7, XR_COLOR
 PREPARE:
     sremAdd reg3, 1024, 16, reg8
+    mov reg1, reg0
 XL:
     mullAddVal reg1, reg8, 65535, reg9
     ctcall simFlush, simPutPixel, reg1, reg2, reg9
@@ -16,6 +17,7 @@ XL:
     jumpIf reg10, XL
 XR_COLOR:
     add reg4, 16, reg11
+    mov reg0, reg1
 XR:
     mullAddVal reg1, reg11, 65535, reg12
     ctcall simFlush, simPutPixel, reg1, reg2, reg12
@@ -23,6 +25,8 @@ XR:
     addCmpEqjumpIfNot reg1, 1, 1024, XR
 YUP_COLOR:
     add reg5, 16, reg13
+    mov reg0, reg1
+    mov reg2, reg0
 YUP:
     mullAddVal reg2, reg13, 65535, reg14
     ctcall simFlush, simPutPixel, reg1, reg2, reg14
@@ -33,6 +37,7 @@ YUP_EXIT:
     jumpIfNot reg15, EXIT
 YD_COLOR:
     add reg6, 16, reg16
+    mov reg0, reg2
 YD:
     mullAddVal reg2, reg16, 65535, reg17
     ctcall simFlush, simPutPixel, reg1, reg2, reg17

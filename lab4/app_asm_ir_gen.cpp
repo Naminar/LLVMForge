@@ -73,7 +73,8 @@ int main(int argc, char *argv[]) {
       input >> arg >> arg >> arg;
       continue;
     }
-    if (!name.compare("tcall") || !name.compare("jumpIfNot") || !name.compare("jumpIf")) {
+    if (!name.compare("tcall") || !name.compare("jumpIfNot") 
+        || !name.compare("jumpIf") || !name.compare("mov")) {
       input >> arg >> arg;
       continue;
     }
@@ -113,6 +114,18 @@ int main(int argc, char *argv[]) {
         outs() << "BB " << name << "\n";
         builder.SetInsertPoint(BBMap[create_label(name)]);//name.pop_back()
       }
+      continue;
+    }
+
+    if (!name.compare("mov")) {
+      input >> arg >> arg1;
+      Value *load_val = builder.CreateLoad(
+          int32Type, builder.CreateConstGEP2_32(regFileType, regFile, 0,
+                                                std::stoi(arg.substr(3))));
+      
+      Value *store_p = builder.CreateConstGEP2_32(regFileType, regFile, 0,
+                                                std::stoi(arg1.substr(3)));
+      builder.CreateStore(load_val, store_p);
       continue;
     }
 
