@@ -1,23 +1,6 @@
-#include "../lab1/sim.h"
+// #include "../lab1/sim.h"
 
-#include "llvm/ExecutionEngine/ExecutionEngine.h"
-#include "llvm/ExecutionEngine/GenericValue.h"
-#include "llvm/IR/IRBuilder.h"
-#include "llvm/IR/LLVMContext.h"
-#include "llvm/IR/Module.h"
-#include "llvm/IR/Verifier.h"
-#include "llvm/Support/TargetSelect.h"
-#include "llvm/Support/raw_ostream.h"
-#include <fstream>
-#include <iostream>
-#include <unordered_map>
-#include <string>
-using namespace llvm;
-
-const int REG_FILE_SIZE = 20;
-uint32_t REG_FILE[REG_FILE_SIZE];
-
-
+#include "ir_sim.h"
 
 std::string create_label(std::string myString) {
   outs() << "making label:" << myString << "\n";
@@ -93,24 +76,29 @@ int main(int argc, char *argv[]) {
   input.open(argv[1]);
 
   // declare void @simPutPixel(i32 noundef, i32 noundef, i32 noundef)
-//   ArrayRef<Type *> simPutPixelParamTypes = {int32Type, int32Type, int32Type};
-//   FunctionType *simPutPixelType =
-//       FunctionType::get(voidType, simPutPixelParamTypes, false);
-//   FunctionCallee simPutPixelFunc =
-//       module->getOrInsertFunction("simPutPixel", simPutPixelType);
+  ArrayRef<Type *> simPutPixelParamTypes = {int32Type, int32Type, int32Type};
+  FunctionType *simPutPixelType =
+      FunctionType::get(voidType, simPutPixelParamTypes, false);
+  FunctionCallee simPutPixelFunc =
+      module->getOrInsertFunction("simPutPixel", simPutPixelType);
 
-//   // declare void @simFlush(...)
-//   FunctionType *simFlushType = FunctionType::get(voidType, false);
-//   FunctionCallee simFlushFunc =
-//       module->getOrInsertFunction("simFlush", simFlushType);
+  // declare void @simFlush(...)
+  FunctionType *simFlushType = FunctionType::get(voidType, false);
+  FunctionCallee simFlushFunc =
+      module->getOrInsertFunction("simFlush", simFlushType);
 
-//   FunctionType *SimRandType = FunctionType::get(Type::getInt32Ty(context), {voidType}, false);
-//   FunctionCallee SimRandFunc =
-//       module->getOrInsertFunction("simRand", SimRandType);
+  FunctionType *SimRandType = FunctionType::get(Type::getInt32Ty(context), {voidType}, false);
+  FunctionCallee SimRandFunc =
+      module->getOrInsertFunction("simRand", SimRandType);
 
   // Funcions types
-  Type *voidType = Type::getVoidTy(context);
+  // Type *voidType = Type::getVoidTy(context);
   FunctionType *voidFuncType = FunctionType::get(voidType, false);
+  ArrayRef<Type *> int32x5Types = {Type::getInt32Ty(context),
+                                   Type::getInt32Ty(context),
+                                   Type::getInt32Ty(context),
+                                   Type::getInt32Ty(context),
+                                   Type::getInt32Ty(context)};
   ArrayRef<Type *> int32x4Types = {Type::getInt32Ty(context),
                                    Type::getInt32Ty(context),
                                    Type::getInt32Ty(context),
@@ -121,6 +109,8 @@ int main(int argc, char *argv[]) {
   ArrayRef<Type *> int32x2Types = {Type::getInt32Ty(context),
                                    Type::getInt32Ty(context)};
   ArrayRef<Type *> int32Types = {Type::getInt32Ty(context)};
+  FunctionType *int32x5FuncType =
+      FunctionType::get(voidType, int32x5Types, false);
   FunctionType *int32x4FuncType =
       FunctionType::get(voidType, int32x4Types, false);
   FunctionType *int32x3FuncType =
@@ -156,14 +146,7 @@ int main(int argc, char *argv[]) {
       module->getOrInsertFunction("doCtcall", int32x3FuncType);
 
   FunctionCallee doAddCmpUgtContinuesFunc =
-      module->getOrInsertFunction(
-        "doAddCmpUgtContinues",
-        FunctionType::get(voidType, {Type::getInt32Ty(context),
-                                    Type::getInt32Ty(context),
-                                    Type::getInt32Ty(context),
-                                    Type::getInt32Ty(context),
-                                    Type::getInt32Ty(context)}, 
-                          false));
+      module->getOrInsertFunction("doAddCmpUgtContinues", int32x5FuncType);
 
   while (input >> name) {
     if (!name.compare("exit")) {
@@ -177,6 +160,7 @@ int main(int argc, char *argv[]) {
     }
 
     if (!name.compare("mov")) {
+      outs() << "\tmov\n";
       input >> arg >> arg1;
       Value *load_val = builder.CreateLoad(
           int32Type, builder.CreateConstGEP2_32(regFileType, regFile, 0,
@@ -191,11 +175,11 @@ int main(int argc, char *argv[]) {
     if (!name.compare("callSrem")) {
       input >> arg >> arg1 >> arg2;
 
-      Value *const_val = ConstantInt::get(Type::getInt32Ty(context), std::stoi(arg1));
+      Value *const_val = builder.getInt32(std::stoi(arg1)); //ConstantInt::get(Type::getInt32Ty(context), std::stoi(arg1));
       Value *reg = builder.getInt32(std::stoi(arg2.substr(3)));
 
       Value *args[] = {const_val, reg};
-      builder.CreateCall(doCallSremFunc, args)
+      builder.CreateCall(doCallSremFunc, args);
       continue;
     }
 
@@ -205,7 +189,7 @@ int main(int argc, char *argv[]) {
       Value *reg = builder.getInt32(std::stoi(arg1.substr(3)));
 
       Value *args[] = {reg};
-      builder.CreateCall(doTcallFunc, args)
+      builder.CreateCall(doTcallFunc, args);
       continue;
     }
 
@@ -217,7 +201,7 @@ int main(int argc, char *argv[]) {
       Value *reg2 = builder.getInt32(std::stoi(arg2.substr(3)));
 
       Value *args[] = {reg, const_val, reg2};
-      builder.CreateCall(doCmpSgtFunc, args)
+      builder.CreateCall(doCmpSgtFunc, args);
       continue;
     }
 
@@ -244,7 +228,7 @@ int main(int argc, char *argv[]) {
 
       Value *args[] = {reg, const_val, const_val1, reg1};
       builder.CreateCall(doSremAddFunc, args);
-      continue;    
+      continue;
     }
 
     if (!name.compare("mullAddVal")) {
@@ -256,7 +240,7 @@ int main(int argc, char *argv[]) {
       Value *reg3 = builder.getInt32(std::stoi(arg3.substr(3)));
 
       Value *args[] = {reg, reg1, const_val, reg3};
-      builder.CreateCall(doMullAddValFunc, args)
+      builder.CreateCall(doMullAddValFunc, args);
       continue;
     }
 
@@ -268,7 +252,7 @@ int main(int argc, char *argv[]) {
       Value *reg4 = builder.getInt32(std::stoi(arg4.substr(3)));
 
       Value *args[] = {reg2, reg3, reg4};
-      builder.CreateCall(doCtcallFunc, args)
+      builder.CreateCall(doCtcallFunc, args);
       continue;
     }
 
@@ -283,11 +267,12 @@ int main(int argc, char *argv[]) {
       Value *reg4 = builder.getInt32(std::stoi(arg4.substr(3)));
 
       Value *args[] = {reg, const_val1, const_val2, reg3, reg4};
-      builder.CreateCall(doAddCmpUgtContinuesFunc, args)
+      builder.CreateCall(doAddCmpUgtContinuesFunc, args);
       continue;
     }
 
     if (!name.compare("jumpIf")) {
+      outs() << "\tjumpIf\n";
       input >> arg >> arg1 >> arg2;
 
       Value *reg_p = builder.CreateConstGEP2_32(regFileType, regFile, 0,
@@ -308,11 +293,12 @@ int main(int argc, char *argv[]) {
       Value *reg2 = builder.getInt32(std::stoi(arg2.substr(3)));
 
       Value *args[] = {reg, const_val1, reg2};
-      builder.CreateCall(doAddFunc, args)
+      builder.CreateCall(doAddFunc, args);
       continue;
     }
 
     if (!name.compare("addCmpEqjumpIfNot")) {
+      outs() << "\taddCmpEqjumpIfNot\n";
       input >> arg >> arg1 >> arg2 >> arg3 >> arg4;
 
       Value *val1 = builder.CreateLoad(
@@ -362,6 +348,33 @@ int main(int argc, char *argv[]) {
     }
     if (fnName == "simRand") {
       return reinterpret_cast<void *>(simRand);
+    }
+    if (fnName == "doCallSrem") {
+      return reinterpret_cast<void *>(doCallSrem);
+    }
+    if (fnName == "doTcall") {
+      return reinterpret_cast<void *>(doTcall);
+    }
+    if (fnName == "doCmpSgt") {
+      return reinterpret_cast<void *>(doCmpSgt);
+    }
+    if (fnName == "doSremAdd") {
+      return reinterpret_cast<void *>(doSremAdd);
+    }
+    if (fnName == "doMov") {
+      return reinterpret_cast<void *>(doMov);
+    }
+    if (fnName == "doAdd") {
+      return reinterpret_cast<void *>(doAdd);
+    }
+    if (fnName == "doMullAddVal") {
+      return reinterpret_cast<void *>(doMullAddVal);
+    }
+    if (fnName == "doCtcall") {
+      return reinterpret_cast<void *>(doCtcall);
+    }
+    if (fnName == "doAddCmpUgtContinues") {
+      return reinterpret_cast<void *>(doAddCmpUgtContinues);
     }
     return nullptr;
   });
