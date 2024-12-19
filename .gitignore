@@ -1,2 +1,4 @@
 *.out
 *.so
+.vscode
+Expression/vcpkg
