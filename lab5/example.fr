@@ -1,0 +1,18 @@
+app 
+    based color is 34
+    let x is rand 7
+    let y is 5
+
+    ascend [ 
+        iterator is 128
+        gradient is b
+        xpoint is x
+        ypoint is y
+    ]
+
+    descend [ 
+        iterator is 128
+        gradient is b
+        xpoint is x
+        ypoint is y
+    ]

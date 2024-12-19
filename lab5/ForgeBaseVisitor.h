@@ -15,6 +15,50 @@
 class  ForgeBaseVisitor : public ForgeVisitor {
 public:
 
+  virtual std::any visitProgram(ForgeParser::ProgramContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitBlock(ForgeParser::BlockContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitSetBColor(ForgeParser::SetBColorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitVarDecl(ForgeParser::VarDeclContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitRandGet(ForgeParser::RandGetContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitAscendLoop(ForgeParser::AscendLoopContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitIterLoop(ForgeParser::IterLoopContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitGradLoop(ForgeParser::GradLoopContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitXLoop(ForgeParser::XLoopContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitYLoop(ForgeParser::YLoopContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitDescendLoop(ForgeParser::DescendLoopContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitExpr(ForgeParser::ExprContext *ctx) override {
     return visitChildren(ctx);
   }

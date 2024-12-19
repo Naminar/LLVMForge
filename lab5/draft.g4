@@ -2,17 +2,17 @@ grammar Forge;
 
 // Parser rule
 program: block+;
-block: NAME setBColor varDecl* ascendLoop* descendLoop*;
+block: NAME setBColor varDecl* ascendLoop descendLoop;
 setBColor: 'based' 'color' 'is' INT;
 varDecl: 'let' NAME 'is' (INT | randGet);
 randGet: 'rand' INT;
-ascendLoop: 'ascend' '[' iterLoop gradLoop xLoop yLoop ']';
+ascendLoop: 'ascend' '[' custLoopInit ']' ;
+descendLoop: 'descend' '[' custLoopInit ']' ;
+custLoopInit: iterLoop gradLoop xLoop yLoop;
 iterLoop: 'iterator' 'is' (NAME | INT);
 gradLoop: 'gradient' 'is' NAME;
-xLoop: 'xpoint' 'is' NAME;
-yLoop: 'ypoint' 'is' NAME;
-descendLoop: 'descend' '[' iterLoop gradLoop xLoop yLoop ']';
-
+xLoop: 'x' 'is' NAME;
+yLoop: 'y' 'is' NAME;
 expr:
 	'-' expr
 	| expr ( '*' | '/') expr
