@@ -1,0 +1,5 @@
+app 
+    based color         is 1678
+    let star_x          is -1204
+    let star_y          is star_x
+    let x_l_gradient    is -star_y
