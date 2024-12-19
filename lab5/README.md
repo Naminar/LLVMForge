@@ -49,3 +49,5 @@ app
         ypoint is star_y
     ]
 ```
+
+![](example.png)
