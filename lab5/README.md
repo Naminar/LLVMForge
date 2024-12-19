@@ -1,4 +1,4 @@
-# The language for grpaphics app from lab1 
+# The language for graphics app from lab1 
 
 ### How to build
 ```bash
