@@ -59,7 +59,7 @@ void forgeParserInitialize() {
     std::vector<std::string>{
       "", "'based'", "'color'", "'is'", "'let'", "'rand'", "'ascend'", "'['", 
       "']'", "'iterator'", "'gradient'", "'xpoint'", "'ypoint'", "'descend'", 
-      "'-'", "'*'", "'/'", "'+'", "'{'", "'}'"
+      "'-'", "'*'", "'/'", "'+'", "'('", "')'"
     },
     std::vector<std::string>{
       "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 
@@ -67,41 +67,39 @@ void forgeParserInitialize() {
     }
   );
   static const int32_t serializedATNSegment[] = {
-  	4,1,22,119,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
+  	4,1,22,115,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
   	7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,1,0,4,0,26,8,0,11,0,12,0,27,
   	1,1,1,1,1,1,5,1,33,8,1,10,1,12,1,36,9,1,1,1,5,1,39,8,1,10,1,12,1,42,9,
   	1,1,1,5,1,45,8,1,10,1,12,1,48,9,1,1,2,1,2,1,2,1,2,1,2,1,3,1,3,1,3,1,3,
   	1,3,3,3,60,8,3,1,4,1,4,1,4,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,6,1,6,1,
   	6,1,6,1,7,1,7,1,7,1,7,1,8,1,8,1,8,1,8,1,9,1,9,1,9,1,9,1,10,1,10,1,10,
   	1,10,1,10,1,10,1,10,1,10,1,11,1,11,1,11,1,11,1,11,1,11,1,11,1,11,1,11,
-  	3,11,106,8,11,1,11,1,11,1,11,1,11,1,11,1,11,5,11,114,8,11,10,11,12,11,
-  	117,9,11,1,11,0,1,22,12,0,2,4,6,8,10,12,14,16,18,20,22,0,3,1,0,20,21,
-  	1,0,15,16,2,0,14,14,17,17,116,0,25,1,0,0,0,2,29,1,0,0,0,4,49,1,0,0,0,
-  	6,54,1,0,0,0,8,61,1,0,0,0,10,64,1,0,0,0,12,72,1,0,0,0,14,76,1,0,0,0,16,
-  	80,1,0,0,0,18,84,1,0,0,0,20,88,1,0,0,0,22,105,1,0,0,0,24,26,3,2,1,0,25,
-  	24,1,0,0,0,26,27,1,0,0,0,27,25,1,0,0,0,27,28,1,0,0,0,28,1,1,0,0,0,29,
-  	30,5,20,0,0,30,34,3,4,2,0,31,33,3,6,3,0,32,31,1,0,0,0,33,36,1,0,0,0,34,
-  	32,1,0,0,0,34,35,1,0,0,0,35,40,1,0,0,0,36,34,1,0,0,0,37,39,3,10,5,0,38,
-  	37,1,0,0,0,39,42,1,0,0,0,40,38,1,0,0,0,40,41,1,0,0,0,41,46,1,0,0,0,42,
-  	40,1,0,0,0,43,45,3,20,10,0,44,43,1,0,0,0,45,48,1,0,0,0,46,44,1,0,0,0,
-  	46,47,1,0,0,0,47,3,1,0,0,0,48,46,1,0,0,0,49,50,5,1,0,0,50,51,5,2,0,0,
-  	51,52,5,3,0,0,52,53,5,21,0,0,53,5,1,0,0,0,54,55,5,4,0,0,55,56,5,20,0,
-  	0,56,59,5,3,0,0,57,60,5,21,0,0,58,60,3,8,4,0,59,57,1,0,0,0,59,58,1,0,
-  	0,0,60,7,1,0,0,0,61,62,5,5,0,0,62,63,5,21,0,0,63,9,1,0,0,0,64,65,5,6,
-  	0,0,65,66,5,7,0,0,66,67,3,12,6,0,67,68,3,14,7,0,68,69,3,16,8,0,69,70,
-  	3,18,9,0,70,71,5,8,0,0,71,11,1,0,0,0,72,73,5,9,0,0,73,74,5,3,0,0,74,75,
-  	7,0,0,0,75,13,1,0,0,0,76,77,5,10,0,0,77,78,5,3,0,0,78,79,5,20,0,0,79,
-  	15,1,0,0,0,80,81,5,11,0,0,81,82,5,3,0,0,82,83,5,20,0,0,83,17,1,0,0,0,
-  	84,85,5,12,0,0,85,86,5,3,0,0,86,87,5,20,0,0,87,19,1,0,0,0,88,89,5,13,
-  	0,0,89,90,5,7,0,0,90,91,3,12,6,0,91,92,3,14,7,0,92,93,3,16,8,0,93,94,
-  	3,18,9,0,94,95,5,8,0,0,95,21,1,0,0,0,96,97,6,11,-1,0,97,98,5,14,0,0,98,
-  	106,3,22,11,6,99,100,5,18,0,0,100,101,3,22,11,0,101,102,5,19,0,0,102,
-  	106,1,0,0,0,103,106,5,21,0,0,104,106,5,20,0,0,105,96,1,0,0,0,105,99,1,
-  	0,0,0,105,103,1,0,0,0,105,104,1,0,0,0,106,115,1,0,0,0,107,108,10,5,0,
-  	0,108,109,7,1,0,0,109,114,3,22,11,6,110,111,10,4,0,0,111,112,7,2,0,0,
-  	112,114,3,22,11,5,113,107,1,0,0,0,113,110,1,0,0,0,114,117,1,0,0,0,115,
-  	113,1,0,0,0,115,116,1,0,0,0,116,23,1,0,0,0,117,115,1,0,0,0,8,27,34,40,
-  	46,59,105,113,115
+  	1,11,1,11,1,11,1,11,1,11,1,11,1,11,3,11,113,8,11,1,11,0,0,12,0,2,4,6,
+  	8,10,12,14,16,18,20,22,0,3,1,0,20,21,1,0,15,16,2,0,14,14,17,17,112,0,
+  	25,1,0,0,0,2,29,1,0,0,0,4,49,1,0,0,0,6,54,1,0,0,0,8,61,1,0,0,0,10,64,
+  	1,0,0,0,12,72,1,0,0,0,14,76,1,0,0,0,16,80,1,0,0,0,18,84,1,0,0,0,20,88,
+  	1,0,0,0,22,112,1,0,0,0,24,26,3,2,1,0,25,24,1,0,0,0,26,27,1,0,0,0,27,25,
+  	1,0,0,0,27,28,1,0,0,0,28,1,1,0,0,0,29,30,5,20,0,0,30,34,3,4,2,0,31,33,
+  	3,6,3,0,32,31,1,0,0,0,33,36,1,0,0,0,34,32,1,0,0,0,34,35,1,0,0,0,35,40,
+  	1,0,0,0,36,34,1,0,0,0,37,39,3,10,5,0,38,37,1,0,0,0,39,42,1,0,0,0,40,38,
+  	1,0,0,0,40,41,1,0,0,0,41,46,1,0,0,0,42,40,1,0,0,0,43,45,3,20,10,0,44,
+  	43,1,0,0,0,45,48,1,0,0,0,46,44,1,0,0,0,46,47,1,0,0,0,47,3,1,0,0,0,48,
+  	46,1,0,0,0,49,50,5,1,0,0,50,51,5,2,0,0,51,52,5,3,0,0,52,53,5,21,0,0,53,
+  	5,1,0,0,0,54,55,5,4,0,0,55,56,5,20,0,0,56,59,5,3,0,0,57,60,3,8,4,0,58,
+  	60,3,22,11,0,59,57,1,0,0,0,59,58,1,0,0,0,60,7,1,0,0,0,61,62,5,5,0,0,62,
+  	63,5,21,0,0,63,9,1,0,0,0,64,65,5,6,0,0,65,66,5,7,0,0,66,67,3,12,6,0,67,
+  	68,3,14,7,0,68,69,3,16,8,0,69,70,3,18,9,0,70,71,5,8,0,0,71,11,1,0,0,0,
+  	72,73,5,9,0,0,73,74,5,3,0,0,74,75,7,0,0,0,75,13,1,0,0,0,76,77,5,10,0,
+  	0,77,78,5,3,0,0,78,79,5,20,0,0,79,15,1,0,0,0,80,81,5,11,0,0,81,82,5,3,
+  	0,0,82,83,5,20,0,0,83,17,1,0,0,0,84,85,5,12,0,0,85,86,5,3,0,0,86,87,5,
+  	20,0,0,87,19,1,0,0,0,88,89,5,13,0,0,89,90,5,7,0,0,90,91,3,12,6,0,91,92,
+  	3,14,7,0,92,93,3,16,8,0,93,94,3,18,9,0,94,95,5,8,0,0,95,21,1,0,0,0,96,
+  	97,5,14,0,0,97,113,3,22,11,0,98,99,7,1,0,0,99,100,3,22,11,0,100,101,3,
+  	22,11,0,101,113,1,0,0,0,102,103,7,2,0,0,103,104,3,22,11,0,104,105,3,22,
+  	11,0,105,113,1,0,0,0,106,107,5,18,0,0,107,108,3,22,11,0,108,109,5,19,
+  	0,0,109,113,1,0,0,0,110,113,5,21,0,0,111,113,5,20,0,0,112,96,1,0,0,0,
+  	112,98,1,0,0,0,112,102,1,0,0,0,112,106,1,0,0,0,112,110,1,0,0,0,112,111,
+  	1,0,0,0,113,23,1,0,0,0,6,27,34,40,46,59,112
   };
   staticData->serializedATN = antlr4::atn::SerializedATNView(serializedATNSegment, sizeof(serializedATNSegment) / sizeof(serializedATNSegment[0]));
 
@@ -423,12 +421,12 @@ tree::TerminalNode* ForgeParser::VarDeclContext::NAME() {
   return getToken(ForgeParser::NAME, 0);
 }
 
-tree::TerminalNode* ForgeParser::VarDeclContext::INT() {
-  return getToken(ForgeParser::INT, 0);
-}
-
 ForgeParser::RandGetContext* ForgeParser::VarDeclContext::randGet() {
   return getRuleContext<ForgeParser::RandGetContext>(0);
+}
+
+ForgeParser::ExprContext* ForgeParser::VarDeclContext::expr() {
+  return getRuleContext<ForgeParser::ExprContext>(0);
 }
 
 
@@ -478,15 +476,21 @@ ForgeParser::VarDeclContext* ForgeParser::varDecl() {
     setState(59);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
-      case ForgeParser::INT: {
+      case ForgeParser::T__4: {
         setState(57);
-        match(ForgeParser::INT);
+        randGet();
         break;
       }
 
-      case ForgeParser::T__4: {
+      case ForgeParser::T__13:
+      case ForgeParser::T__14:
+      case ForgeParser::T__15:
+      case ForgeParser::T__16:
+      case ForgeParser::T__17:
+      case ForgeParser::NAME:
+      case ForgeParser::INT: {
         setState(58);
-        randGet();
+        expr();
         break;
       }
 
@@ -1058,160 +1062,108 @@ std::any ForgeParser::ExprContext::accept(tree::ParseTreeVisitor *visitor) {
     return visitor->visitChildren(this);
 }
 
-
 ForgeParser::ExprContext* ForgeParser::expr() {
-   return expr(0);
-}
-
-ForgeParser::ExprContext* ForgeParser::expr(int precedence) {
-  ParserRuleContext *parentContext = _ctx;
-  size_t parentState = getState();
-  ForgeParser::ExprContext *_localctx = _tracker.createInstance<ExprContext>(_ctx, parentState);
-  ForgeParser::ExprContext *previousContext = _localctx;
-  (void)previousContext; // Silence compiler, in case the context is not used by generated code.
-  size_t startState = 22;
-  enterRecursionRule(_localctx, 22, ForgeParser::RuleExpr, precedence);
-
-    size_t _la = 0;
+  ExprContext *_localctx = _tracker.createInstance<ExprContext>(_ctx, getState());
+  enterRule(_localctx, 22, ForgeParser::RuleExpr);
+  size_t _la = 0;
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
 #else
   auto onExit = finally([=] {
 #endif
-    unrollRecursionContexts(parentContext);
+    exitRule();
   });
   try {
-    size_t alt;
-    enterOuterAlt(_localctx, 1);
-    setState(105);
+    setState(112);
     _errHandler->sync(this);
-    switch (_input->LA(1)) {
-      case ForgeParser::T__13: {
-        setState(97);
-        match(ForgeParser::T__13);
-        setState(98);
-        expr(6);
-        break;
-      }
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 5, _ctx)) {
+    case 1: {
+      enterOuterAlt(_localctx, 1);
+      setState(96);
+      match(ForgeParser::T__13);
+      setState(97);
+      expr();
+      break;
+    }
 
-      case ForgeParser::T__17: {
-        setState(99);
-        match(ForgeParser::T__17);
-        setState(100);
-        expr(0);
-        setState(101);
-        match(ForgeParser::T__18);
-        break;
-      }
+    case 2: {
+      enterOuterAlt(_localctx, 2);
+      setState(98);
+      _la = _input->LA(1);
+      if (!(_la == ForgeParser::T__14
 
-      case ForgeParser::INT: {
-        setState(103);
-        match(ForgeParser::INT);
-        break;
+      || _la == ForgeParser::T__15)) {
+      _errHandler->recoverInline(this);
       }
+      else {
+        _errHandler->reportMatch(this);
+        consume();
+      }
+      setState(99);
+      expr();
+      setState(100);
+      expr();
+      break;
+    }
 
-      case ForgeParser::NAME: {
-        setState(104);
-        match(ForgeParser::NAME);
-        break;
+    case 3: {
+      enterOuterAlt(_localctx, 3);
+      setState(102);
+      _la = _input->LA(1);
+      if (!(_la == ForgeParser::T__13
+
+      || _la == ForgeParser::T__16)) {
+      _errHandler->recoverInline(this);
       }
+      else {
+        _errHandler->reportMatch(this);
+        consume();
+      }
+      setState(103);
+      expr();
+      setState(104);
+      expr();
+      break;
+    }
+
+    case 4: {
+      enterOuterAlt(_localctx, 4);
+      setState(106);
+      match(ForgeParser::T__17);
+      setState(107);
+      expr();
+      setState(108);
+      match(ForgeParser::T__18);
+      break;
+    }
+
+    case 5: {
+      enterOuterAlt(_localctx, 5);
+      setState(110);
+      match(ForgeParser::INT);
+      break;
+    }
+
+    case 6: {
+      enterOuterAlt(_localctx, 6);
+      setState(111);
+      match(ForgeParser::NAME);
+      break;
+    }
 
     default:
-      throw NoViableAltException(this);
+      break;
     }
-    _ctx->stop = _input->LT(-1);
-    setState(115);
-    _errHandler->sync(this);
-    alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 7, _ctx);
-    while (alt != 2 && alt != atn::ATN::INVALID_ALT_NUMBER) {
-      if (alt == 1) {
-        if (!_parseListeners.empty())
-          triggerExitRuleEvent();
-        previousContext = _localctx;
-        setState(113);
-        _errHandler->sync(this);
-        switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 6, _ctx)) {
-        case 1: {
-          _localctx = _tracker.createInstance<ExprContext>(parentContext, parentState);
-          pushNewRecursionContext(_localctx, startState, RuleExpr);
-          setState(107);
-
-          if (!(precpred(_ctx, 5))) throw FailedPredicateException(this, "precpred(_ctx, 5)");
-          setState(108);
-          _la = _input->LA(1);
-          if (!(_la == ForgeParser::T__14
-
-          || _la == ForgeParser::T__15)) {
-          _errHandler->recoverInline(this);
-          }
-          else {
-            _errHandler->reportMatch(this);
-            consume();
-          }
-          setState(109);
-          expr(6);
-          break;
-        }
-
-        case 2: {
-          _localctx = _tracker.createInstance<ExprContext>(parentContext, parentState);
-          pushNewRecursionContext(_localctx, startState, RuleExpr);
-          setState(110);
-
-          if (!(precpred(_ctx, 4))) throw FailedPredicateException(this, "precpred(_ctx, 4)");
-          setState(111);
-          _la = _input->LA(1);
-          if (!(_la == ForgeParser::T__13
-
-          || _la == ForgeParser::T__16)) {
-          _errHandler->recoverInline(this);
-          }
-          else {
-            _errHandler->reportMatch(this);
-            consume();
-          }
-          setState(112);
-          expr(5);
-          break;
-        }
-
-        default:
-          break;
-        } 
-      }
-      setState(117);
-      _errHandler->sync(this);
-      alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 7, _ctx);
-    }
+   
   }
   catch (RecognitionException &e) {
     _errHandler->reportError(this, e);
     _localctx->exception = std::current_exception();
     _errHandler->recover(this, _localctx->exception);
   }
+
   return _localctx;
-}
-
-bool ForgeParser::sempred(RuleContext *context, size_t ruleIndex, size_t predicateIndex) {
-  switch (ruleIndex) {
-    case 11: return exprSempred(antlrcpp::downCast<ExprContext *>(context), predicateIndex);
-
-  default:
-    break;
-  }
-  return true;
-}
-
-bool ForgeParser::exprSempred(ExprContext *_localctx, size_t predicateIndex) {
-  switch (predicateIndex) {
-    case 0: return precpred(_ctx, 5);
-    case 1: return precpred(_ctx, 4);
-
-  default:
-    break;
-  }
-  return true;
 }
 
 void ForgeParser::initialize() {

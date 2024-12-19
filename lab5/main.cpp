@@ -118,14 +118,18 @@ struct TreeLLVMWalker : public ForgeVisitor {
     int val;
     Value *val_v;
 
-    if(ctx->INT()) {
-      outs() << ctx->INT()->getText() << "\n";
-      val = std::stoi(ctx->INT()->getText());
-      val_v = ConstantInt::get(Type::getInt32Ty(*ctxLLVM), val);
-    } 
+    // if(ctx->INT()) {
+    //   outs() << ctx->INT()->getText() << "\n";
+    //   val = std::stoi(ctx->INT()->getText());
+    //   val_v = ConstantInt::get(Type::getInt32Ty(*ctxLLVM), val);
+    // } 
 
     if(ctx->randGet()) {
       val_v = std::any_cast<Value*>(visitRandGet(ctx->randGet()));
+    }
+
+    if(ctx->expr()) {
+      val_v = std::any_cast<Value*>(visitExpr(ctx->expr()));
     }
     
     registerVar(name, val_v);
