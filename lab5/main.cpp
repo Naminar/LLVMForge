@@ -41,27 +41,27 @@ struct TreeLLVMWalker : public ForgeVisitor {
           return find->second;
         }
       }
+      outs() << "[Error] Can't find variable: " << name << "\n";
       return nullptr;
     }
 
   antlrcpp::Any visitProgram(ForgeParser::
   ForgeParser::ProgramContext *ctx) override {
         outs() << "visitProgram\n";
-    // declare i32 @PUT_PIXEL(i32, i32, i32)
+
     ArrayRef<Type *> simPutPixelParamTypes = {int32Type, int32Type, int32Type};
     FunctionType *simPutPixelType =
-        FunctionType::get(int32Type, simPutPixelParamTypes, false);
-    module->getOrInsertFunction("PUT_PIXEL", simPutPixelType);
+        FunctionType::get(voidType, simPutPixelParamTypes, false);
+    module->getOrInsertFunction("simPutPixel", simPutPixelType);
 
-    // declare i32 @FLUSH()
-    FunctionType *simFlushType = FunctionType::get(int32Type, false);
-    module->getOrInsertFunction("FLUSH", simFlushType);
+    FunctionType *simFlushType = FunctionType::get(voidType, false);
+    module->getOrInsertFunction("simFlush", simFlushType);
 
       FunctionType *SimRandType = FunctionType::get(Type::getInt32Ty(
         *ctxLLVM), false); 
       module->getOrInsertFunction("simRand", SimRandType);
 
-    // program: nodeDecl+;
+
     for (auto it : ctx->
     block()) {
       visitBlock(it);
@@ -140,64 +140,166 @@ struct TreeLLVMWalker : public ForgeVisitor {
     Function *func = module->getFunction("simRand");
 
     return (Value *) builder->CreateSRem((Value *)builder->CreateCall(func), ConstantInt::get(Type::getInt32Ty(*ctxLLVM), val));
-    // return val;
  }
 
  antlrcpp::Any visitAscendLoop(ForgeParser::AscendLoopContext *ctx) override {
     outs() << "visitAscendLoop\n";
+    Value* iter_v;
+    Value* grad_v;
+    Value* x_v;
+    Value* y_v;
     if(ctx->iterLoop())
-      visitIterLoop(ctx->iterLoop());
+      iter_v = std::any_cast<Value*>(visitIterLoop(ctx->iterLoop()));
     if(ctx->gradLoop())
-      visitGradLoop(ctx->gradLoop());
+      grad_v = std::any_cast<Value*>(visitGradLoop(ctx->gradLoop()));
     if(ctx->xLoop())
-      visitXLoop(ctx->xLoop());
+      x_v = std::any_cast<Value*>( visitXLoop(ctx->xLoop()));
     if(ctx->yLoop())
-      visitYLoop(ctx->yLoop());
+      y_v = std::any_cast<Value*>( visitYLoop(ctx->yLoop()));
+
+    BasicBlock *entry = builder->GetInsertBlock();
+    BasicBlock *loopCond = BasicBlock::Create(*ctxLLVM, "loop.cond", 
+    currFunc);
+    BasicBlock *loopBody = BasicBlock::Create(*ctxLLVM, "loop.body", currFunc);
+    BasicBlock *loopEnd = BasicBlock::Create(*ctxLLVM, "loop.end", currFunc);
+    
+    Value *stars_x = iter_v;
+    Value *stars_y = y_v;
+    Value *x_l_gradient = grad_v;
+    
+    Function *simPutPixel = module->getFunction("simPutPixel");
+    Function *simFlush = module->getFunction("simFlush");
+
+    builder->CreateBr(loopCond);
+    builder->SetInsertPoint(loopCond);
+    
+    PHINode *x_l = builder->CreatePHI(builder->getInt32Ty(), 2, "x_l");
+    x_l->addIncoming(stars_x, entry);
+
+    Value *cond = builder->CreateICmpSGT(x_l, builder->getInt32(0), "cond");
+    builder->CreateCondBr(cond, loopBody, loopEnd);
+
+    builder->SetInsertPoint(loopBody);
+    // simPutPixel(x_l, stars_y, 0x0000FFFF + x_l * (16 + x_l_gradient));
+    Value *color = builder->CreateAdd(
+        builder->getInt32(0x0000FFFF),
+        builder->CreateMul(x_l, builder->CreateAdd(builder->getInt32(16), grad_v)),
+        "color");
+    
+    builder->CreateCall(simPutPixel, {x_l, stars_y, color});
+    builder->CreateCall(simFlush, {});
+    
+    Value *x_l_next = builder->CreateSub(x_l, builder->getInt32(1), "x_l.next");
+    x_l->addIncoming(x_l_next, loopBody);
+    
+    builder->CreateBr(loopCond);
+    builder->SetInsertPoint(loopEnd);
+
     return nullptr;
  }
 
  antlrcpp::Any visitDescendLoop(ForgeParser::DescendLoopContext *ctx) override {
     outs() << "visitDescendLoop\n";
+    Value* iter_v;
+    Value* grad_v;
+    Value* x_v;
+    Value* y_v;
     if(ctx->iterLoop())
-      visitIterLoop(ctx->iterLoop());
+      iter_v = std::any_cast<Value*>(visitIterLoop(ctx->iterLoop()));
     if(ctx->gradLoop())
-      visitGradLoop(ctx->gradLoop());
+      grad_v = std::any_cast<Value*>(visitGradLoop(ctx->gradLoop()));
     if(ctx->xLoop())
-      visitXLoop(ctx->xLoop());
+      x_v = std::any_cast<Value*>( visitXLoop(ctx->xLoop()));
     if(ctx->yLoop())
-      visitYLoop(ctx->yLoop());
+      y_v = std::any_cast<Value*>( visitYLoop(ctx->yLoop()));
+    
+    BasicBlock *entry = builder->GetInsertBlock();
+    BasicBlock *loopCond = BasicBlock::Create(*ctxLLVM, "loop.cond", currFunc);
+    BasicBlock *loopBody = BasicBlock::Create(*ctxLLVM, "loop.body", currFunc);
+    BasicBlock *loopEnd = BasicBlock::Create(*ctxLLVM, "loop.end", currFunc);
+
+    Value *stars_x = iter_v;
+    Value *stars_y = y_v;
+    Value *x_r_gradient = grad_v;
+    Value *border = x_v;
+    
+    Function *simPutPixel = module->getFunction("simPutPixel");
+    Function *simFlush = module->getFunction("simFlush");
+
+    builder->CreateBr(loopCond);
+    builder->SetInsertPoint(loopCond);
+
+
+    PHINode *x_r = builder->CreatePHI(builder->getInt32Ty(), 2, "x_r");
+    x_r->addIncoming(stars_x, entry);
+
+    Value *cond = builder->CreateICmpSLT(x_r, border, "cond");
+    builder->CreateCondBr(cond, loopBody, loopEnd);
+
+    builder->SetInsertPoint(loopBody);
+    // simPutPixel(x_r, stars_y, 0x0000FFFF + x_r * (16 + x_r_gradient));
+    Value *color = builder->CreateAdd(
+        builder->getInt32(0x0000FFFF),
+        builder->CreateMul(x_r, builder->CreateAdd(builder->getInt32(16), x_r_gradient)),
+        "color");
+    
+    builder->CreateCall(simPutPixel, {x_r, stars_y, color});
+    builder->CreateCall(simFlush, {});
+    
+    Value *x_r_next = builder->CreateAdd(x_r, builder->getInt32(1), "x_r.next");
+    x_r->addIncoming(x_r_next, loopBody);
+
+    builder->CreateBr(loopCond);
+    builder->SetInsertPoint(loopEnd);
+
     return nullptr;
  }
 
   antlrcpp::Any visitIterLoop(ForgeParser::IterLoopContext *ctx) override {
     outs() << "visitIterLoop\n";
-    if(ctx->INT())
+    Value* val_v;
+    if(ctx->INT()) {
       outs() << ctx->INT()->getText() << "\n";
-    
-    if(ctx->NAME())
+      int val = std::stoi(ctx->INT()->getText());
+      val_v = ConstantInt::get(Type::getInt32Ty(*ctxLLVM), val);
+
+    }
+      
+    if(ctx->NAME()) {
       outs() << ctx->NAME()->getText() << "\n";
-    return nullptr;  
+      val_v = searchVar(ctx->NAME()->getText());
+      }
+    return val_v;  
   }
 
   antlrcpp::Any visitGradLoop(ForgeParser::GradLoopContext *ctx) override {
     outs() << "visitGradLoop\n";
-    if(ctx->NAME())
+    Value* val_v;
+    if(ctx->NAME()) {
       outs() << ctx->NAME()->getText() << "\n";
-    return nullptr;
+      val_v = searchVar(ctx->NAME()->getText());
+    }
+    return val_v;
   }
 
   antlrcpp::Any visitXLoop(ForgeParser::XLoopContext *ctx) override {
     outs() << "visitXLoop\n";
-    if(ctx->NAME())
+   Value* val_v;
+    if(ctx->NAME()) {
       outs() << ctx->NAME()->getText() << "\n";
-    return nullptr;
+      val_v = searchVar(ctx->NAME()->getText());
+    }
+    return val_v;
   }
 
   antlrcpp::Any visitYLoop(ForgeParser::YLoopContext *ctx) override {
     outs() << "visitYLoop\n";
-    if(ctx->NAME())
+    Value* val_v;
+    if(ctx->NAME()) {
       outs() << ctx->NAME()->getText() << "\n";
-    return nullptr;
+      val_v = searchVar(ctx->NAME()->getText());
+    }
+    return val_v;
   }
 
   antlrcpp::Any visitExpr(ForgeParser::ExprContext *ctx) override {
@@ -294,11 +396,14 @@ int main(int argc, const char *argv[]) {
 
   ExecutionEngine *ee = EngineBuilder(std::unique_ptr<Module>(module)).create();
   ee->InstallLazyFunctionCreator([=](const std::string &fnName) -> void * {
-    if (fnName == "PUT_PIXEL") {
+    if (fnName == "simPutPixel") {
       return reinterpret_cast<void *>(simPutPixel);
     }
-    if (fnName == "FLUSH") {
+    if (fnName == "simFlush") {
       return reinterpret_cast<void *>(simFlush);
+    }
+    if (fnName == "simRand") {
+      return reinterpret_cast<void *>(simRand);
     }
     return nullptr;
   });

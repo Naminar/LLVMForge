@@ -1,18 +1,22 @@
 app 
-    based color is 34
-    let x is rand 7
-    let y is 5
+    based color         is 1678
+    let star_x          is rand 1204
+    let star_y          is rand 512
+    let x_l_gradient    is rand 1204
+    let x_r_gradient    is rand 1204
+    let y_up_gradient   is rand 1204
+    let y_down_gradient is rand 1204
 
     ascend [ 
-        iterator is 128
-        gradient is b
-        xpoint is x
-        ypoint is y
+        iterator is star_x
+        gradient is x_l_gradient
+        xpoint is star_x
+        ypoint is star_y
     ]
 
     descend [ 
-        iterator is 128
-        gradient is b
-        xpoint is x
-        ypoint is y
+        iterator is star_y
+        gradient is x_r_gradient
+        xpoint is star_x
+        ypoint is star_y
     ]
